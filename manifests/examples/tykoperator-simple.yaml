@@ -1,0 +1,28 @@
+apiVersion: vourteen14.labs/v1
+kind: TykRoute
+metadata:
+  name: simple-api
+  namespace: default
+  labels:
+    app: simple-api
+    tier: backend
+spec:
+  target:
+    configMapName: dynamic-api-routes
+
+  apiDefinition:
+    name: "Simple API"
+    api_id: "simple-api-001"
+    use_keyless: true
+    active: true
+
+    proxy:
+      listen_path: "/api/simple/"
+      target_url: "http://httpbin.org"
+      strip_listen_path: true
+
+    version_data:
+      not_versioned: true
+      versions:
+        Default:
+          name: "v1"

@@ -1,0 +1,121 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: tyk-route-operator
+  namespace: default
+  labels:
+    app: tyk-route-operator
+    version: v1.0.0
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: tyk-route-operator-role
+  labels:
+    app: tyk-route-operator
+    version: v1.0.0
+rules:
+- apiGroups:
+  - ''
+  resources:
+  - configmaps
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  verbs:
+  - get
+  - list
+  - watch
+  - patch
+
+- apiGroups:
+  - vourteen14.labs
+  resources:
+  - tykroutes
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+
+- apiGroups:
+  - vourteen14.labs
+  resources:
+  - tykroutes/status
+  verbs:
+  - get
+  - update
+  - patch
+
+- apiGroups:
+  - vourteen14.labs
+  resources:
+  - tykroutes/finalizers
+  verbs:
+  - update
+
+- apiGroups:
+  - ''
+  resources:
+  - services
+  verbs:
+  - get
+  - list
+
+- apiGroups:
+  - ''
+  resources:
+  - pods
+  verbs:
+  - get
+  - list
+  - watch
+
+- apiGroups:
+  - ''
+  resources:
+  - events
+  verbs:
+  - create
+  - patch
+
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: tyk-route-operator-rolebinding
+  labels:
+    app: tyk-route-operator
+    version: v1.0.0
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: tyk-route-operator-role
+subjects:
+- kind: ServiceAccount
+  name: tyk-route-operator
+  namespace: default

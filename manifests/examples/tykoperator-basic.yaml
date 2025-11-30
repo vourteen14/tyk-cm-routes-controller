@@ -1,0 +1,28 @@
+apiVersion: vourteen14.labs/v1
+kind: TykRoute
+metadata:
+  name: users-api
+  namespace: default
+  labels:
+    app: users-api
+    env: production
+spec:
+  target:
+    configMapName: dynamic-api-routes
+    tykDeployment: tyk-gateway
+
+  apiDefinition:
+    name: "Users API"
+    api_id: "users-api-prod"
+    use_keyless: true
+    
+    proxy:
+      listen_path: "/api/users/"
+      target_url: "http://user-service.default.svc.cluster.local:8080"
+      strip_listen_path: true
+    
+    version_data:
+      not_versioned: true
+      versions:
+        Default:
+          name: "Default"
