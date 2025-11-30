@@ -20,7 +20,7 @@ spec:
       serviceAccountName: tyk-route-operator
       containers:
       - name: operator
-        image: vourteen14/tyk-route-operator:v1.0.2
+        image: vourteen14/tyk-route-operator:v1.0.0
         imagePullPolicy: Always
         env:
         - name: OPERATOR_NAMESPACE
